@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">KSpannable Sample</string>
+    <string name="terms">By continuing, you agree to the %1$s and %2$s.</string>
+    <string name="terms_of_service">Terms of service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <string name="terms_of_service_full">
+    <![CDATA[By continuing, you agree to the <a href="terms_of_service_url">Terms of Service</a> and <a href="privacy_policy_url">Privacy Policy</a>.]]>
+    </string>
+
+    <string name="first">This is the first sentence.</string>
+    <string name="second">This is the second sentence.</string>
+    <string name="third">This is the third sentence.</string>
 </resources>

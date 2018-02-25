@@ -1,5 +1,6 @@
 package com.github.programmerr47.kspannable
 
+import android.content.Context
 import android.content.res.Resources
 import android.support.annotation.StringRes
 import java.lang.IndexOutOfBoundsException

@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.DrawableRes
+import android.support.annotation.StyleRes
 import android.support.v4.content.ContextCompat
 import android.support.v7.content.res.AppCompatResources
 import android.text.TextPaint
@@ -15,6 +16,9 @@ class ResSpans(val context: Context) : Iterable<Any> {
     val spans = ArrayList<Any>()
 
     override fun iterator() = spans.iterator()
+
+    fun appearance(@StyleRes id: Int) =
+            spans.add(TextAppearanceSpan(context, id))
 
     fun size(@DimenRes id: Int) =
             spans.add(AbsoluteSizeSpan(context.resources.getDimension(id).toInt()))
@@ -33,17 +37,19 @@ class ResSpans(val context: Context) : Iterable<Any> {
     fun typeface(family: String) = spans.add(TypefaceSpan(family))
     fun typeface(style: Int) = spans.add(StyleSpan(style))
 
-    fun click(action: () -> Unit) = spans.add(object : ClickableSpan() {
-        override fun onClick(view: View) = action()
-
-        override fun updateDrawState(ds: TextPaint?) {
-            super.updateDrawState(ds)
-            ds?.isUnderlineText = false
-        }
-    })
+    fun click(action: () -> Unit) = spans.add(clickableSpan(action))
 
     fun custom(span: Any) = spans.add(span)
 }
 
 inline fun Context.resSpans(options: ResSpans.() -> Unit) =
         ResSpans(this).apply(options)
+
+fun clickableSpan(action: () -> Unit) = object : ClickableSpan() {
+    override fun onClick(view: View) = action()
+
+    override fun updateDrawState(ds: TextPaint?) {
+        super.updateDrawState(ds)
+        ds?.isUnderlineText = false
+    }
+}
