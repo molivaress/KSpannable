@@ -12,6 +12,9 @@ import android.widget.Toast
 import android.widget.Toast.*
 import com.github.programmerr47.kspannable.*
 import com.github.programmerr47.kspannablesample.Sample.construct
+import com.github.programmerr47.kspannablesample.Sample.construct2
+import com.github.programmerr47.kspannablesample.Sample.construct2Refactored
+import com.github.programmerr47.kspannablesample.Sample.constructFinal
 import com.github.programmerr47.kspannablesample.Sample.constructNew
 import kotlinx.android.synthetic.main.activity_sample.*
 
@@ -20,7 +23,7 @@ class SampleActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sample)
-        tv_text.text = constructNew(this)
+        tv_text.text = constructFinal(this)
         tv_text.movementMethod = LinkMovementMethod.getInstance()
     }
 

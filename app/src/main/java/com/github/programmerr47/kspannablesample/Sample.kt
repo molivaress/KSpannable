@@ -2,6 +2,8 @@ package com.github.programmerr47.kspannablesample
 
 
 import android.content.Context
+import android.support.annotation.ColorRes
+import android.support.annotation.DimenRes
 import android.support.v4.content.ContextCompat
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -10,8 +12,11 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.URLSpan
 import android.widget.Toast
 import android.widget.Toast.*
+import com.github.programmerr47.kspannable.SpannableStringCreator
 import com.github.programmerr47.kspannable.clickableSpan
 import com.github.programmerr47.kspannable.getSpannable
+import com.github.programmerr47.kspannable.resSpans
+import com.github.programmerr47.kspannablesample.Sample.showToast
 
 object Sample {
 
@@ -63,5 +68,52 @@ object Sample {
         return spannable
     }
 
-    private fun Context.showToast(message: String) = Toast.makeText(this, message, LENGTH_SHORT)
+    fun construct2Refactored(context: Context): CharSequence {
+        val firstSent = "This is the first sentence."
+        val secondSent = "This is the second sentence."
+        val thirdSent = "This is the third sentence."
+
+        val spannable = SpannableStringBuilder()
+        spannable.append(context, firstSent, R.color.colorPrimary, R.dimen.first_size) { context.showToast("clicked on first") }
+        spannable.append("\n")
+        spannable.append(context, secondSent, R.color.colorPrimaryDark, R.dimen.second_size) { context.showToast("clicked on second") }
+        spannable.append("\n")
+        spannable.append(context, thirdSent, R.color.colorAccent, R.dimen.third_size) { context.showToast("clicked on third") }
+        return spannable
+    }
+
+    fun SpannableStringBuilder.append(
+            context: Context,
+            text: CharSequence,
+            @ColorRes textColorRes: Int,
+            @DimenRes textSizeRes: Int,
+            clickAction: () -> Unit) {
+        val index = length
+        append(text)
+        setSpan(clickableSpan(clickAction), index, index + text.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(ForegroundColorSpan(ContextCompat.getColor(context, textColorRes)), index, index + text.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(AbsoluteSizeSpan(context.resources.getDimensionPixelSize(textSizeRes)), index, index + text.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+    }
+
+    fun constructFinal(context: Context): CharSequence {
+        return SpannableStringCreator()
+                .append("This is the first sentence.", context.resSpans {
+                    color(R.color.colorPrimary)
+                    size(R.dimen.first_size)
+                    click { context.showToast("clicked on first") }
+                })
+                .appendLn("", context.resSpans {
+                    color(R.color.colorPrimaryDark)
+                    size(R.dimen.second_size)
+                    click { context.showToast("clicked on second") }
+                })
+                .appendLn("", context.resSpans {
+                    color(R.color.colorAccent)
+                    size(R.dimen.third_size)
+                    click { context.showToast("clicked on third") }
+                })
+                .toSpannableString()
+    }
+
+    private fun Context.showToast(message: String) = Toast.makeText(this, message, LENGTH_SHORT).show()
 }
