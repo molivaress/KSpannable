@@ -16,7 +16,6 @@ import com.github.programmerr47.kspannable.SpannableStringCreator
 import com.github.programmerr47.kspannable.clickableSpan
 import com.github.programmerr47.kspannable.getSpannable
 import com.github.programmerr47.kspannable.resSpans
-import com.github.programmerr47.kspannablesample.Sample.showToast
 
 object Sample {
 
@@ -102,12 +101,12 @@ object Sample {
                     size(R.dimen.first_size)
                     click { context.showToast("clicked on first") }
                 })
-                .appendLn("", context.resSpans {
+                .appendLn("This is the second sentence.", context.resSpans {
                     color(R.color.colorPrimaryDark)
                     size(R.dimen.second_size)
                     click { context.showToast("clicked on second") }
                 })
-                .appendLn("", context.resSpans {
+                .appendLn("This is the third sentence.", context.resSpans {
                     color(R.color.colorAccent)
                     size(R.dimen.third_size)
                     click { context.showToast("clicked on third") }
